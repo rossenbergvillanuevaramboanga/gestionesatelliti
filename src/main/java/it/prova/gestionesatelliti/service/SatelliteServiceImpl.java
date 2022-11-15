@@ -1,8 +1,13 @@
 package it.prova.gestionesatelliti.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.Predicate;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,13 +17,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.repository.SatelliteRepository;
+
 
 @Service
 public class SatelliteServiceImpl implements SatelliteService {
 	
 	@Autowired
 	private SatelliteRepository repository;
+	
+	@Autowired
+	private EntityManager entityManager;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -83,6 +93,33 @@ public class SatelliteServiceImpl implements SatelliteService {
 		};
 
 		return repository.findAll(specificationCriteria);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Satellite> listAllLaunchMoreThanTwoYears() {
+		// TODO Auto-generated method stub
+		LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+		Date tenYearsAgoDate = Date.from(tenYearsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		return repository.findByDataLancioBefore(tenYearsAgoDate);
+		
+		
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Satellite> listAllDeactivatedButNotReEntered() {
+		// TODO Auto-generated method stub
+		StatoSatellite stato = StatoSatellite.DISATTIVATO;
+		return repository.findByStatoAndDataLancio(stato,null);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Satellite> listAllinOrbitButFixed() {
+		// TODO Auto-generated method stub
+		StatoSatellite stato = StatoSatellite.FISSO;
+		return repository.findByStatoAndDataRientro(stato,null);
 	}
 
 	

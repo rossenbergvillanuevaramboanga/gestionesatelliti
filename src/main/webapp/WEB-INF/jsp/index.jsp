@@ -65,9 +65,9 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#collection"/></svg>
 			        </div>
-			        <h2>Cerca Satelliti</h2>
-			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="satellite/search" class="icon-link">
+			        <h2>Query 1</h2>
+			        <p>Lanciati da più di due anni (fornisce una lista di satelliti lanciati da più di due anni che non sono disattivati)</p>
+			        <a href="satellite/launchMoreThanTwoYears" class="icon-link">
 			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>
@@ -76,9 +76,9 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"/></svg>
 			        </div>
-			        <h2>Inserisci Nuovo Satellite</h2>
-			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="satellite/insert" class="icon-link">
+			        <h2>Query 2</h2>
+			        <p>Disattivati ma non rientrati (che sono stati disattivati ma con data rientro ancora a null)</p>
+			        <a href="satellite/deactivatedButNotReEntered" class="icon-link">
 			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>
@@ -87,9 +87,9 @@
 			        <div class="feature-icon bg-primary bg-gradient">
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#toggles2"/></svg>
 			        </div>
-			        <h2>Altra Funzione</h2>
-			        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-			        <a href="#" class="icon-link">
+			        <h2>Query 3</h2>
+			        <p>Rimasti in orbita 10 anni ma che ora sono fissi</p>
+			        <a href="satellite/inOrbitButFixed" class="icon-link">
 			          Vai alla funzionalità
 			          <svg class="bi" width="1em" height="1em"><use xlink:href="#chevron-right"/></svg>
 			        </a>

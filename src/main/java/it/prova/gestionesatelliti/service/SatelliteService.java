@@ -17,6 +17,12 @@ public interface SatelliteService {
 	public void rimuovi(Long id);
 	
 	public List<Satellite> findByExample(Satellite example);
+
+	public List<Satellite> listAllLaunchMoreThanTwoYears();
+
+	public List<Satellite> listAllDeactivatedButNotReEntered();
+
+	public List<Satellite> listAllinOrbitButFixed();
 	
 
 }

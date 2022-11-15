@@ -61,7 +61,7 @@
 								<div class="col-md-6">
 									<label for="denominazione" class="form-label">Denominazione <span class="text-danger">*</span></label>
 									<spring:bind path="denominazione">
-										<input type="text" name="denominazione" id="denominazione" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire la denominazione" value="${update_satellite_attr.denominazione }" required>
+										<input readonly="readonly" type="text" name="denominazione" id="denominazione" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire la denominazione" value="${update_satellite_attr.denominazione }" required>
 									</spring:bind>
 									<form:errors  path="denominazione" cssClass="error_field" />
 								</div>
@@ -69,7 +69,7 @@
 								<div class="col-md-6">
 									<label for="codice" class="form-label">Codice <span class="text-danger">*</span></label>
 									<spring:bind path="codice">
-										<input type="text" name="codice" id="codice" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il codice" value="${update_satellite_attr.codice }" required>
+										<input readonly="readonly" type="text" name="codice" id="codice" class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Inserire il codice" value="${update_satellite_attr.codice }" required>
 									</spring:bind>
 									<form:errors  path="codice" cssClass="error_field" />
 								</div>
