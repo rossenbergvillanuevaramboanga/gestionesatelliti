@@ -83,6 +83,7 @@
 	                            		title="formato : gg/mm/aaaa"  name="dataLancio" required 
 	                            		value="${parsedDate}" >
 		                            </spring:bind>
+		                            <form:errors  path="dataLancio" cssClass="error_field" />
 								</div>
 								
 								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${insert_satellite_attr.dataRientro}' />
@@ -93,6 +94,7 @@
 	                            		title="formato : gg/mm/aaaa"  name="dataRientro" required 
 	                            		value="${parsedDate}" >
 		                            </spring:bind>
+		                            <form:errors  path="dataRientro" cssClass="error_field" />
 								</div>
 								
 								<div class="col-md-3">
@@ -105,6 +107,8 @@
 									      	<option value="DISATTIVATO" ${insert_satellite_attr.stato == 'DISATTIVATO'?'selected':''}>DISATTIVATO</option>
 								    	</select>
 								    </spring:bind>
+								     <form:errors  path="stato" cssClass="error_field" />
+								    
 								</div>
 								
 								

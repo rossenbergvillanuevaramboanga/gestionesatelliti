@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,17 +68,31 @@ public class SatelliteController {
 		if (result.hasErrors())
 			return "satellite/insert";
 
-		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null) {
-			if (satellite.getDataLancio().after(satellite.getDataRientro())) {
-				result.rejectValue(null, null);
-				return "satellite/insert";
+		if (satellite.getDataLancio() == null) {
+			
+			if(satellite.getDataRientro() != null) {
+				
+			result.rejectValue("dataLancio", "error.date.lancio");
+			return "satellite/insert";
+			
+			}else {
+				satelliteService.inserisciNuovo(satellite);
+				redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+				return "redirect:/satellite";
 			}
-
 		}
 
-		if (satellite.getDataLancio() == null && satellite.getDataRientro() != null) {
-			result.rejectValue(null, null);
+		if (satellite.getDataRientro() != null && satellite.getDataLancio().after(satellite.getDataRientro())) {
+			result.rejectValue("dataLancio", "error.date");
+			result.rejectValue("dataRientro", "error.date");
 			return "satellite/insert";
+		}
+
+		if (satellite.getDataLancio().after(new Date()) && (satellite.getStato().equals((StatoSatellite.IN_MOVIMENTO))
+				|| satellite.getStato().equals((StatoSatellite.FISSO)))) {
+			result.rejectValue("stato", "error.stato.invalid");
+			return "satellite/insert";
+
 		}
 
 		satelliteService.inserisciNuovo(satellite);
