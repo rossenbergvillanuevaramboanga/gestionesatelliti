@@ -98,9 +98,9 @@ public class SatelliteServiceImpl implements SatelliteService {
 	@Transactional(readOnly = true)
 	public List<Satellite> listAllLaunchMoreThanTwoYears() {
 		// TODO Auto-generated method stub
-		LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
-		Date tenYearsAgoDate = Date.from(tenYearsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		return repository.findByDataLancioBefore(tenYearsAgoDate);
+		LocalDate twoYearsAgo = LocalDate.now().minusYears(2);
+		Date twoYearsAgoDate = Date.from(twoYearsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		return repository.findByDataLancioBefore(twoYearsAgoDate);
 		
 		
 	}
@@ -109,16 +109,16 @@ public class SatelliteServiceImpl implements SatelliteService {
 	@Transactional(readOnly = true)
 	public List<Satellite> listAllDeactivatedButNotReEntered() {
 		// TODO Auto-generated method stub
-		StatoSatellite stato = StatoSatellite.DISATTIVATO;
-		return repository.findByStatoAndDataLancio(stato,null);
+		return repository.findByStatoAndDataLancio(StatoSatellite.DISATTIVATO,null);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public List<Satellite> listAllinOrbitButFixed() {
 		// TODO Auto-generated method stub
-		StatoSatellite stato = StatoSatellite.FISSO;
-		return repository.findByStatoAndDataRientro(stato,null);
+		LocalDate tenYearsAgo = LocalDate.now().minusYears(10);
+		Date tenYearsAgoDate = Date.from(tenYearsAgo.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		return repository.findByStatoAndDataLancioBefore(StatoSatellite.FISSO,tenYearsAgoDate);
 	}
 
 	

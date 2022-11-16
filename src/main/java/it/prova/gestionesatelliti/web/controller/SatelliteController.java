@@ -67,36 +67,38 @@ public class SatelliteController {
 
 		if (result.hasErrors())
 			return "satellite/insert";
-
-		if (satellite.getDataLancio() == null) {
-			
-			if(satellite.getDataRientro() != null) {
-				
-			result.rejectValue("dataLancio", "error.date.lancio");
-			return "satellite/insert";
-			
-			}else {
-				satelliteService.inserisciNuovo(satellite);
-				redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
-				return "redirect:/satellite";
-			}
-		}
-
-		if (satellite.getDataRientro() != null && satellite.getDataLancio().after(satellite.getDataRientro())) {
-			result.rejectValue("dataLancio", "error.date");
-			result.rejectValue("dataRientro", "error.date");
+		
+		// DataRientro Validata ma non DataLancio
+		if (satellite.getDataLancio() == null && satellite.getDataRientro() != null) {
+			result.rejectValue("dataLancio", "satellite.error.dataLancio.invalid");
 			return "satellite/insert";
 		}
-
-		if (satellite.getDataLancio().after(new Date()) && (satellite.getStato().equals((StatoSatellite.IN_MOVIMENTO))
+		
+		// DataLancio > DataRientro
+		if (satellite.getDataRientro() != null && satellite.getDataRientro() != null && satellite.getDataLancio().after(satellite.getDataRientro())) {
+			result.rejectValue("dataLancio", "satellite.error.dataLancio.dataRientro.invalid");
+			result.rejectValue("dataRientro", "satellite.error.dataLancio.dataRientro.invalid");
+			return "satellite/insert";
+		}
+		
+		// DataLancio Futuro il suo stato può essere solo NULL o DISATTIVATO
+		if (satellite.getDataLancio() != null && satellite.getDataLancio().after(new Date()) && (satellite.getStato().equals((StatoSatellite.IN_MOVIMENTO))
 				|| satellite.getStato().equals((StatoSatellite.FISSO)))) {
-			result.rejectValue("stato", "error.stato.invalid");
+			result.rejectValue("stato", "satellite.error.stato.invalid");
 			return "satellite/insert";
-
+		}
+		
+		// Un Satellite Vecchio
+		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null && 
+				satellite.getDataLancio().before(new Date()) && 
+				satellite.getDataRientro().before(new Date()) && !satellite.getStato().equals(null) &&
+				!(satellite.getStato().equals((StatoSatellite.DISATTIVATO)))) {
+			result.rejectValue("stato", "satellite.error.stato.invalid");
+			return "satellite/insert";
 		}
 
+		//Validazione Superata
 		satelliteService.inserisciNuovo(satellite);
-
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite";
 	}
@@ -115,6 +117,14 @@ public class SatelliteController {
 
 	@PostMapping("/delete")
 	public String delete(@RequestParam(required = true) Long idSatellite, RedirectAttributes redirectAttrs) {
+		
+		Satellite satelliteInstance = satelliteService.caricaSingoloElemento(idSatellite);
+		
+		if(satelliteInstance.getStato().equals(StatoSatellite.FISSO) || satelliteInstance.getStato().equals(StatoSatellite.IN_MOVIMENTO)) {
+			redirectAttrs.addFlashAttribute("errorMessage", "Non puoi cancellare un satelline IN MOVIMENTO o FISSO");
+			return "redirect:/satellite";
+		}
+		
 		satelliteService.rimuovi(idSatellite);
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite";
@@ -132,7 +142,7 @@ public class SatelliteController {
 
 		if (result.hasErrors())
 			return "satellite/edit";
-
+		
 		satelliteService.aggiorna(satellite);
 
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
