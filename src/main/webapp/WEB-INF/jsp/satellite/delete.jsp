@@ -64,17 +64,17 @@
 					    <!-- end card body -->
 					    
 					    <div class='card-footer col-12' >
-					    
-					        <a href="${pageContext.request.contextPath}/satellite" class='btn btn-outline-secondary' style='width:80px'>
-					            <i class='fa fa-chevron-left'></i> Back
-					        </a>
-					        <!--  <a href="${pageContext.request.contextPath}/impiegato/delete/${delete_impiegato_attr.id}" class='btn btn-primary'>
-					            <i class='fa fa-chevron-left'></i> Conferma
-					        </a> -->
-					        <form:form method="post" action="${pageContext.request.contextPath}/satellite/delete/" >
-					        <input type="hidden" name="idSatellite" value="${delete_satellite_attr.id}" >
-					        <button type="submit" name="submit" value="submit" id="submit" class="btn btn-primary">Conferma</button>
-					        </form:form>
+					    	<div class='row btn-group' >
+					    	<div class="col-sm-5">
+					        	 <a href="${pageContext.request.contextPath}/satellite" class='btn btn-outline-secondary' style='width:80px'>Back</a>
+					        </div>
+					        <div class="col-sm-5">
+					       		 <form:form method="post" action="${pageContext.request.contextPath}/satellite/delete/" >
+					       	 	 <input type="hidden" name="idSatellite" value="${delete_satellite_attr.id}" >
+					       		 <button type="submit" name="submit" value="submit" id="submit" class='btn btn-primary'>Conferma</button>
+					       		 </form:form>
+					        </div>
+					        </div>
 					    </div>
 					    
 					    

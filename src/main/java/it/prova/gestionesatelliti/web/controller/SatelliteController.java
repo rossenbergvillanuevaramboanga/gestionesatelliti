@@ -2,10 +2,11 @@ package it.prova.gestionesatelliti.web.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 import javax.validation.Valid;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -199,6 +200,54 @@ public class SatelliteController {
 		List<Satellite> results = satelliteService.listAllinOrbitButFixed();
 		mv.addObject("satellite_list_attribute", results);
 		mv.setViewName("satellite/list");
+		return mv;
+	}
+	
+	//Swiftch off switchoff
+	@GetMapping("/switchoff")
+	public ModelAndView switchoff() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> results = satelliteService.listAllElements();
+		Integer risultatiTotali = results.size();
+				
+		results = results.stream().filter
+				(s -> s.getStato().equals(StatoSatellite.FISSO)||
+						s.getStato().equals(StatoSatellite.IN_MOVIMENTO)
+						&&(s.getDataRientro()==null || s.getDataRientro().after(new Date()))
+						).collect(Collectors.toList());
+		
+		Integer risultatiDaModificare = results.size();
+		
+		mv.addObject("satellite_list_attribute", results);
+		mv.addObject("satellite_count_all_attribute", risultatiTotali);
+		mv.addObject("satellite_count_modify_attribute", risultatiDaModificare);
+		mv.setViewName("satellite/disable");
+		return mv;
+	}
+	
+	@PostMapping("/disable")
+	public ModelAndView disable() {
+		ModelAndView mv = new ModelAndView();
+		
+		List<Satellite> results = satelliteService.listAllElements();
+		Integer risultatiTotali = results.size();
+				
+		results = results.stream().filter
+				(s -> s.getStato().equals(StatoSatellite.FISSO)||
+						s.getStato().equals(StatoSatellite.IN_MOVIMENTO)
+						&&(s.getDataRientro()==null || s.getDataRientro().after(new Date()))
+						).collect(Collectors.toList());
+		
+		for (Satellite satellite : results) {
+			satellite.setDataRientro(new Date());
+			satellite.setStato(StatoSatellite.DISATTIVATO);
+			satelliteService.aggiorna(satellite);
+		}
+			
+		mv.addObject("satellite_list_attribute", null);
+		mv.addObject("satellite_count_all_attribute", risultatiTotali);
+		mv.addObject("satellite_count_modify_attribute", 0);
+		mv.setViewName("satellite/disable");
 		return mv;
 	}
 
